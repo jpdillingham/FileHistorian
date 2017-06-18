@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileHistorian", "FileHistorian\FileHistorian.csproj", "{064663FE-2CF1-4CA2-AF68-B40EE4E8F48D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileHistorian.Core", "FileHistorian.Core\FileHistorian.Core.csproj", "{064663FE-2CF1-4CA2-AF68-B40EE4E8F48D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A16ED18A-0149-4FE5-AED5-8D37F79B4699}"
 	ProjectSection(SolutionItems) = preProject
