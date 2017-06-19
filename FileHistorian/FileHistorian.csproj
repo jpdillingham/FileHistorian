@@ -48,6 +48,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Domain\Context.cs" />
+    <Compile Include="Domain\Entities\Diff.cs" />
+    <Compile Include="Domain\Entities\File.cs" />
+    <Compile Include="Domain\Entities\Scan.cs" />
+    <Compile Include="Domain\Services\DiffFactory.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProjectInstaller.cs">
       <SubType>Component</SubType>
@@ -75,6 +80,7 @@
       <DependentUpon>Service.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
