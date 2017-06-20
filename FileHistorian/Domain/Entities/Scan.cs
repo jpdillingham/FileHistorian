@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace FileHistorian.Domain.Entities
 {
-    class Scan
+    public class Scan
     {
+        public IEnumerable<File> Files { get; set; }
     }
 }
