@@ -7,14 +7,11 @@ using System.Threading.Tasks;
 
 namespace FileHistorian.Domain.Services
 {
-    public class DiffFactory : IDiffFactory
+    public interface IDiffFactory
     {
         #region Public Methods
 
-        public Diff GetDiff(Scan left, Scan right)
-        {
-            return new Diff();
-        }
+        Diff GetDiff(Scan left, Scan right);
 
         #endregion Public Methods
     }
