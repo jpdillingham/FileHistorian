@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FileHistorian.Domain.Entities
+namespace FileHistorian.Data.Entities
 {
     [NotMapped]
     public class Diff
