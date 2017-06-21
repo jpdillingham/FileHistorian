@@ -10,6 +10,16 @@ namespace FileHistorian.Data.Entities
 {
     public class Scan
     {
+        #region Public Constructors
+
+        public Scan()
+        {
+            ScanID = Guid.NewGuid();
+            Files = new List<File>();
+        }
+
+        #endregion Public Constructors
+
         #region Public Properties
 
         [Column(Order = 2)]
