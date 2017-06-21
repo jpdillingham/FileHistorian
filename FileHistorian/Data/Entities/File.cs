@@ -13,18 +13,17 @@ namespace FileHistorian.Data.Entities
         #region Public Properties
 
         [Column(Order = 5)]
-        public DateTime AccessedOn { get; set; }
+        public DateTime? AccessedOn { get; set; }
 
         [Column(Order = 3)]
-        public DateTime CreatedOn { get; set; }
+        public DateTime? CreatedOn { get; set; }
 
         [Key]
-        [Required]
         [Column(Order = 1)]
         public string FullName { get; set; }
 
         [Column(Order = 4)]
-        public DateTime ModifiedOn { get; set; }
+        public DateTime? ModifiedOn { get; set; }
 
         public string Name
         {
