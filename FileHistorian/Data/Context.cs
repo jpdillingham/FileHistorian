@@ -1,10 +1,5 @@
-﻿using FileHistorian.Data.Entities;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data.Entity;
+using FileHistorian.Data.Entities;
 
 namespace FileHistorian.Data
 {

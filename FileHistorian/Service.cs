@@ -5,8 +5,10 @@ namespace FileHistorian
     /// <summary>
     ///     The application Service.
     /// </summary>
-    partial class Service : ServiceBase
+    public partial class Service : ServiceBase
     {
+        #region Public Constructors
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="Service"/> class.
         /// </summary>
@@ -14,6 +16,10 @@ namespace FileHistorian
         {
             InitializeComponent();
         }
+
+        #endregion Public Constructors
+
+        #region Protected Methods
 
         /// <summary>
         ///     Invokes the application's startup logic.
@@ -34,5 +40,7 @@ namespace FileHistorian
         {
             Program.Stop();
         }
+
+        #endregion Protected Methods
     }
 }

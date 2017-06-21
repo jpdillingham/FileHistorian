@@ -1,8 +1,8 @@
-﻿using FileHistorian.Data;
-using FileHistorian.Data.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ServiceProcess;
+using FileHistorian.Data;
+using FileHistorian.Data.Entities;
 
 namespace FileHistorian
 {
