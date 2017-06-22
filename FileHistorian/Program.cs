@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ServiceProcess;
 using FileHistorian.Data;
 using FileHistorian.Data.Entities;
+using NLog;
 
 namespace FileHistorian
 {
@@ -11,6 +12,12 @@ namespace FileHistorian
     /// </summary>
     internal class Program
     {
+        #region Private Fields
+
+        private static Logger log = LogManager.GetCurrentClassLogger();
+
+        #endregion Private Fields
+
         #region Internal Methods
 
         /// <summary>
@@ -19,13 +26,13 @@ namespace FileHistorian
         /// <param name="args">The command line arguments.</param>
         internal static void Start(string[] args)
         {
-            Console.WriteLine("Started!");
+            log.Info("Application Started.");
 
             try
             {
                 using (Context context = new Context())
                 {
-                    Console.WriteLine("Adding scan...");
+                    log.Info("Adding scan...");
 
                     Scan scan = new Scan();
 
@@ -36,13 +43,13 @@ namespace FileHistorian
 
                     scan.Files.Add(new File() { FullName = @"\path\to\file.ext", CreatedOn = DateTime.Now, ModifiedOn = DateTime.Now, AccessedOn = DateTime.Now });
 
-                    Console.WriteLine("Scan constructed.  Adding to context...");
+                    log.Info("Scan constructed.  Adding to context...");
 
                     context.Scans.Add(scan);
 
                     context.SaveChanges();
 
-                    Console.WriteLine("Added scan!");
+                    log.Info("Added scan!");
                 }
             }
             catch (Exception ex)
@@ -56,7 +63,7 @@ namespace FileHistorian
         /// </summary>
         internal static void Stop()
         {
-            Console.WriteLine("Stopped.");
+            log.Info("Application stopped.");
         }
 
         #endregion Internal Methods
