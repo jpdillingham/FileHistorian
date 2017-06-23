@@ -1,4 +1,9 @@
-﻿using System.ServiceProcess;
+﻿/*
+ * Copyright (C) 2017 JP Dillingham (jp@dillingham.ws)
+ * The MIT License (MIT)
+ */
+
+using System.ServiceProcess;
 
 namespace FileHistorian
 {

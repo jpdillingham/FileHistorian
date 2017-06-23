@@ -1,4 +1,9 @@
-﻿using System.Collections.Generic;
+﻿/*
+ * Copyright (C) 2017 JP Dillingham (jp@dillingham.ws)
+ * The MIT License (MIT)
+ */
+
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FileHistorian.Data.Entities

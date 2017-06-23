@@ -1,4 +1,9 @@
-﻿namespace FileHistorian
+﻿/*
+ * Copyright (C) 2017 JP Dillingham (jp@dillingham.ws)
+ * The MIT License (MIT)
+ */
+
+namespace FileHistorian
 {
     /// <summary>
     ///     The application Service.

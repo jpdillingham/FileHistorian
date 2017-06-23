@@ -1,4 +1,9 @@
-﻿using System;
+﻿/*
+ * Copyright (C) 2017 JP Dillingham (jp@dillingham.ws)
+ * The MIT License (MIT)
+ */
+
+using System;
 using System.Collections.Generic;
 using System.ServiceProcess;
 using FileHistorian.Data;

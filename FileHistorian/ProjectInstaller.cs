@@ -1,4 +1,9 @@
-﻿using System.ComponentModel;
+﻿/*
+ * Copyright (C) 2017 JP Dillingham (jp@dillingham.ws)
+ * The MIT License (MIT)
+ */
+
+using System.ComponentModel;
 
 namespace FileHistorian
 {
@@ -8,6 +13,8 @@ namespace FileHistorian
     [RunInstaller(true)]
     public partial class ProjectInstaller : System.Configuration.Install.Installer
     {
+        #region Public Constructors
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="ProjectInstaller"/> class.
         /// </summary>
@@ -15,5 +22,7 @@ namespace FileHistorian
         {
             InitializeComponent();
         }
+
+        #endregion Public Constructors
     }
 }

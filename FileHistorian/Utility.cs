@@ -1,4 +1,9 @@
-﻿using System;
+﻿/*
+ * Copyright (C) 2017 JP Dillingham (jp@dillingham.ws)
+ * The MIT License (MIT)
+ */
+
+using System;
 
 namespace FileHistorian
 {
@@ -7,6 +12,8 @@ namespace FileHistorian
     /// </summary>
     internal static class Utility
     {
+        #region Internal Methods
+
         /// <summary>
         ///     Determines whether the current platform is Windows using Environment.OSVersion.Platform.
         /// </summary>
@@ -20,7 +27,7 @@ namespace FileHistorian
         /// <summary>
         ///     Installs or uninstalls the Windows Service using the included ProjectInstaller.
         /// </summary>
-        /// <param name="action">If 'uninstall', uninstalls the service.  Any other string installs the service.</param>
+        /// <param name="action">If 'uninstall', uninstalls the service. Any other string installs the service.</param>
         internal static void ModifyService(string action)
         {
             string path = System.Reflection.Assembly.GetExecutingAssembly().Location;
@@ -37,5 +44,7 @@ namespace FileHistorian
 
             System.Configuration.Install.ManagedInstallerClass.InstallHelper(args);
         }
+
+        #endregion Internal Methods
     }
 }

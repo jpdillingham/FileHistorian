@@ -1,4 +1,9 @@
-﻿using FileHistorian.Data.Entities;
+﻿/*
+ * Copyright (C) 2017 JP Dillingham (jp@dillingham.ws)
+ * The MIT License (MIT)
+ */
+
+using FileHistorian.Data.Entities;
 
 namespace FileHistorian.Data.Services
 {
