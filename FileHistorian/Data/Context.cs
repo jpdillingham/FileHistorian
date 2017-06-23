@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.Configuration;
+using System.Data.Entity;
 using FileHistorian.Data.Entities;
 
 namespace FileHistorian.Data
@@ -9,7 +10,7 @@ namespace FileHistorian.Data
 
         public Context()
         {
-            Database.Connection.ConnectionString = "Server=SQL;Database=FileHistorian;Trusted_Connection=True;";
+            Database.Connection.ConnectionString = ConfigurationManager.ConnectionStrings["Default"].ConnectionString;
         }
 
         #endregion Public Constructors
