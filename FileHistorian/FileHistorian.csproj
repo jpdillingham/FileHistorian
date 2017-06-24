@@ -70,6 +70,7 @@
     <Compile Include="Data\Entities\Scan.cs" />
     <Compile Include="Data\Services\IDiffFactory.cs" />
     <Compile Include="Data\Services\DiffFactory.cs" />
+    <Compile Include="FileScanner.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProjectInstaller.cs">
       <SubType>Component</SubType>
