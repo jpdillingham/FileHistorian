@@ -47,9 +47,7 @@ namespace FileHistorian
                     scan.Start = DateTime.Now;
                     scan.End = DateTime.Now;
 
-                    scan.Files = new List<File>();
-
-                    scan.Files.Add(new File() { FullName = @"\path\to\file.ext", CreatedOn = DateTime.Now, ModifiedOn = DateTime.Now, AccessedOn = DateTime.Now });
+                    scan.Files = new FileScanner().Scan(@"c:\pkg\");
 
                     log.Info("Scan constructed.  Adding to context...");
 
