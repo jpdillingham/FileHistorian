@@ -19,6 +19,9 @@ namespace FileHistorian
     {
         #region Private Fields
 
+        /// <summary>
+        ///     The logger for the class.
+        /// </summary>
         private static Logger log = LogManager.GetCurrentClassLogger();
 
         #endregion Private Fields
