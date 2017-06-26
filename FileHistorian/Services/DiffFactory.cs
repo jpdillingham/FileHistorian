@@ -5,7 +5,7 @@
 
 using FileHistorian.Data.Entities;
 
-namespace FileHistorian.Data.Services
+namespace FileHistorian.Services
 {
     /// <summary>
     ///     Given two <see cref="Scan"/> objects, compares them and returns a <see cref="Diff"/> containing the differences.

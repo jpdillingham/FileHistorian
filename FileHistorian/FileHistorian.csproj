@@ -70,9 +70,11 @@
     <Compile Include="Data\Entities\Diff.cs" />
     <Compile Include="Data\Entities\File.cs" />
     <Compile Include="Data\Entities\Scan.cs" />
-    <Compile Include="Data\Services\IDiffFactory.cs" />
-    <Compile Include="Data\Services\DiffFactory.cs" />
-    <Compile Include="FileScanner.cs" />
+    <Compile Include="Services\IFileFactory.cs" />
+    <Compile Include="Services\IDiffFactory.cs" />
+    <Compile Include="Services\DiffFactory.cs" />
+    <Compile Include="Services\FileFactory.cs" />
+    <Compile Include="Services\Scanner.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProjectInstaller.cs">
       <SubType>Component</SubType>
@@ -106,6 +108,9 @@
   <ItemGroup>
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Data\Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
