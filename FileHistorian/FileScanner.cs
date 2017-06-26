@@ -15,11 +15,18 @@ namespace FileHistorian
         {
             List<File> retVal = new List<File>();
 
-            string[] fileList = System.IO.Directory.GetFiles(directory, "*", System.IO.SearchOption.AllDirectories);
-
-            foreach (string file in fileList)
+            try
             {
-                retVal.Add(CreateFile(file));
+                string[] fileList = System.IO.Directory.GetFiles(directory, "*", System.IO.SearchOption.AllDirectories);
+
+                foreach (string file in fileList)
+                {
+                    retVal.Add(CreateFile(file));
+                }
+            }
+            catch (Exception ex)
+            {
+                // TODO: add error to a list of errors for the context?
             }
 
             return retVal;

@@ -11,6 +11,8 @@ using FileHistorian.Data.Entities;
 using NLog;
 using System.Configuration;
 using System.Linq;
+using FileHistorian.CommandLine;
+using System.Threading.Tasks;
 
 namespace FileHistorian
 {
@@ -30,6 +32,15 @@ namespace FileHistorian
 
         #endregion Private Fields
 
+        [Argument('i', "install-service")]
+        private static bool InstallService { get; set; }
+
+        [Argument('u', "uninstall-service")]
+        private static bool UninstallService { get; set; }
+
+        [Argument('o', "run-once")]
+        private static bool RunOnce { get; set; }
+
         #region Internal Methods
 
         /// <summary>
@@ -42,33 +53,7 @@ namespace FileHistorian
 
             try
             {
-                var section = (FileHistorianConfigurationSection)ConfigurationManager.GetSection("fileHistorian");
-
-                directories = section.Directories.Select(d => d.Path).ToList();
-
-                foreach (string directory in directories)
-                {
-                    log.Info(directory);
-                }
-
-                //using (Context context = new Context())
-                //{
-                //    log.Info("Adding scan...");
-
-                // Scan scan = new Scan();
-
-                // scan.Start = DateTime.Now; scan.End = DateTime.Now;
-
-                // scan.Files = new FileScanner().Scan(@"c:\pkg\");
-
-                // log.Info("Scan constructed. Adding to context...");
-
-                // context.Scans.Add(scan);
-
-                // context.SaveChanges();
-
-                //    log.Info("Added scan!");
-                //}
+                Task.Run(() => Scan(directories));
             }
             catch (Exception ex)
             {
@@ -94,33 +79,97 @@ namespace FileHistorian
         /// <param name="args">The command line arguments.</param>
         private static void Main(string[] args)
         {
-            if (args.Length > 0)
+            Arguments.Populate();
+
+            if (InstallService)
             {
-                if (args[0] == "--install")
-                {
-                    Utility.ModifyService("install");
-                }
-                else if (args[0] == "--uninstall")
-                {
-                    Utility.ModifyService("uninstall");
-                }
+                Utility.ModifyService("install");
+            }
+            else if (UninstallService)
+            {
+                Utility.ModifyService("uninstall");
             }
             else
             {
-                // if the platform is Windows and Environment.UserInteractive is false, the application is being started as a service.
-                if (Utility.IsWindows() && (!Environment.UserInteractive))
+                LoadConfiguration();
+
+                if (RunOnce)
                 {
-                    ServiceBase.Run(new Service());
+                    Task.Run(() => Scan(directories, false)).GetAwaiter().GetResult();
                 }
                 else
                 {
-                    // the application is being run under user mode.
-                    Start(args);
-                    Stop();
+                    // if the platform is Windows and Environment.UserInteractive is false, the application is being started as a service.
+                    if (Utility.IsWindows() && (!Environment.UserInteractive))
+                    {
+                        ServiceBase.Run(new Service());
+                    }
+                    else
+                    {
+                        // the application is being run under user mode.
+                        Start(args);
+                        Stop();
+                    }
                 }
             }
         }
 
         #endregion Private Methods
+
+        private static void LoadConfiguration()
+        {
+            var section = (FileHistorianConfigurationSection)ConfigurationManager.GetSection("fileHistorian");
+
+            directories = section.Directories.Select(d => d.Path).ToList();
+        }
+
+        private static async Task Scan(List<string> directories, bool async = true)
+        {
+            log.Info("Starting scan...");
+
+            using (Context context = new Context())
+            {
+                Scan scan = new Scan();
+                scan.Start = DateTime.Now;
+                scan.Files = new List<File>();
+
+                FileScanner scanner = new FileScanner();
+
+                foreach (string directory in directories)
+                {
+                    log.Info($"Scanning directory '{directory}'...");
+
+                    List<File> files = new List<File>();
+
+                    if (async)
+                    {
+                        files = await scanner.ScanAsync(directory);
+                    }
+                    else
+                    {
+                        files = scanner.Scan(directory);
+                    }
+
+                    scan.Files.AddRange(files);
+                }
+
+                scan.End = DateTime.Now;
+
+                log.Info("Saving scan results to database...");
+
+                context.Scans.Add(scan);
+
+                if (async)
+                {
+                    await context.SaveChangesAsync();
+                }
+                else
+                {
+                    context.SaveChanges();
+                }
+            }
+
+            log.Info("Scan complete.");
+        }
     }
 }
