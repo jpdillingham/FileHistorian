@@ -68,6 +68,7 @@
     <Compile Include="Configuration.cs" />
     <Compile Include="Data\Context.cs" />
     <Compile Include="Data\Entities\Diff.cs" />
+    <Compile Include="Data\Entities\Exception.cs" />
     <Compile Include="Data\Entities\File.cs" />
     <Compile Include="Data\Entities\Scan.cs" />
     <Compile Include="Services\IFileFactory.cs" />

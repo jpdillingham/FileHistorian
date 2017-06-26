@@ -56,7 +56,7 @@ namespace FileHistorian
             {
                 Task.Run(() => Scan(directories));
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 Console.WriteLine(ex);
             }

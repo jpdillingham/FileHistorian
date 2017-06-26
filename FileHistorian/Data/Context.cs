@@ -38,6 +38,11 @@ namespace FileHistorian.Data
         /// </summary>
         public DbSet<Scan> Scans { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the list of <see cref="Exception"/> records for the context.
+        /// </summary>
+        public DbSet<Exception> Exceptions { get; set; }
+
         #endregion Public Properties
     }
 }

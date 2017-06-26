@@ -37,9 +37,14 @@ namespace FileHistorian.Data.Entities
         public DateTime? End { get; set; }
 
         /// <summary>
-        ///     Gets or sets the list of files found during the scan.
+        ///     Gets or sets the list of <see cref="File"/> s found during the scan.
         /// </summary>
         public virtual List<File> Files { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the list of <see cref="Exception"/> s encountered during the scan.
+        /// </summary>
+        public virtual List<Exception> Exceptions { get; set; }
 
         /// <summary>
         ///     Gets or sets the unique identifier of the scan.

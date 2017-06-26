@@ -41,7 +41,7 @@ namespace FileHistorian.Services
                     }
                 }
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 // TODO: add error to a list of errors for the context?
             }
