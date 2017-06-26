@@ -9,6 +9,8 @@ using System.ServiceProcess;
 using FileHistorian.Data;
 using FileHistorian.Data.Entities;
 using NLog;
+using System.Configuration;
+using System.Linq;
 
 namespace FileHistorian
 {
@@ -18,6 +20,8 @@ namespace FileHistorian
     internal class Program
     {
         #region Private Fields
+
+        private static List<string> directories = new List<string>();
 
         /// <summary>
         ///     The logger for the class.
@@ -38,25 +42,33 @@ namespace FileHistorian
 
             try
             {
-                using (Context context = new Context())
+                var section = (FileHistorianConfigurationSection)ConfigurationManager.GetSection("fileHistorian");
+
+                directories = section.Directories.Select(d => d.Path).ToList();
+
+                foreach (string directory in directories)
                 {
-                    log.Info("Adding scan...");
-
-                    Scan scan = new Scan();
-
-                    scan.Start = DateTime.Now;
-                    scan.End = DateTime.Now;
-
-                    scan.Files = new FileScanner().Scan(@"c:\pkg\");
-
-                    log.Info("Scan constructed.  Adding to context...");
-
-                    context.Scans.Add(scan);
-
-                    context.SaveChanges();
-
-                    log.Info("Added scan!");
+                    log.Info(directory);
                 }
+
+                //using (Context context = new Context())
+                //{
+                //    log.Info("Adding scan...");
+
+                // Scan scan = new Scan();
+
+                // scan.Start = DateTime.Now; scan.End = DateTime.Now;
+
+                // scan.Files = new FileScanner().Scan(@"c:\pkg\");
+
+                // log.Info("Scan constructed. Adding to context...");
+
+                // context.Scans.Add(scan);
+
+                // context.SaveChanges();
+
+                //    log.Info("Added scan!");
+                //}
             }
             catch (Exception ex)
             {

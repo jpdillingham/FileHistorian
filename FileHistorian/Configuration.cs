@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FileHistorian
 {
@@ -20,8 +16,20 @@ namespace FileHistorian
         #endregion Public Properties
     }
 
-    public class DirectoryElementCollection : ConfigurationElementCollection
+    public class DirectoryElementCollection : ConfigurationElementCollection, IEnumerable<DirectoryElement>
     {
+        #region Public Methods
+
+        public new IEnumerator<DirectoryElement> GetEnumerator()
+        {
+            foreach (var key in this.BaseGetAllKeys())
+            {
+                yield return (DirectoryElement)BaseGet(key);
+            }
+        }
+
+        #endregion Public Methods
+
         #region Protected Methods
 
         protected override ConfigurationElement CreateNewElement()
