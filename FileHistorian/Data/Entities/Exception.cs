@@ -8,11 +8,6 @@ namespace FileHistorian.Data.Entities
     {
         #region Public Properties
 
-        [Key]
-        [Column(Order = 1)]
-        [MaxLength(260)]
-        public string FullName { get; set; }
-
         [Column(Order = 2)]
         [MaxLength(500)]
         public string Message { get; set; }
@@ -23,6 +18,10 @@ namespace FileHistorian.Data.Entities
         [ForeignKey("Scan")]
         [Column(Order = 0)]
         public Guid ScanID { get; set; }
+
+        [Key]
+        [Column(Order = 1)]
+        public DateTime Timestamp { get; set; }
 
         #endregion Public Properties
     }

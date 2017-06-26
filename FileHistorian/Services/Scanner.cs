@@ -1,5 +1,4 @@
 ﻿using FileHistorian.Data.Entities;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,8 +25,9 @@ namespace FileHistorian.Services
         public Scan Scan(List<string> directories)
         {
             Scan scan = new Scan();
-            scan.Start = DateTime.Now;
+            scan.Start = System.DateTime.Now;
             scan.Files = new List<File>();
+            scan.Exceptions = new List<Exception>();
 
             try
             {
@@ -43,7 +43,7 @@ namespace FileHistorian.Services
             }
             catch (System.Exception ex)
             {
-                // TODO: add error to a list of errors for the context?
+                scan.Exceptions.Add(new Data.Entities.Exception() { Timestamp = System.DateTime.Now, Message = ex.Message });
             }
 
             return scan;
