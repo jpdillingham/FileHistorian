@@ -13,6 +13,7 @@ using System.Configuration;
 using System.Linq;
 using FileHistorian.CommandLine;
 using System.Threading.Tasks;
+using FileHistorian.Services;
 
 namespace FileHistorian
 {
@@ -129,33 +130,18 @@ namespace FileHistorian
 
             using (Context context = new Context())
             {
+                Scanner scanner = new Scanner();
+
                 Scan scan = new Scan();
-                scan.Start = DateTime.Now;
-                scan.Files = new List<File>();
 
-                FileScanner scanner = new FileScanner();
-
-                foreach (string directory in directories)
+                if (async)
                 {
-                    log.Info($"Scanning directory '{directory}'...");
-
-                    List<File> files = new List<File>();
-
-                    if (async)
-                    {
-                        files = await scanner.ScanAsync(directory);
-                    }
-                    else
-                    {
-                        files = scanner.Scan(directory);
-                    }
-
-                    scan.Files.AddRange(files);
+                    scan = await scanner.ScanAsync(directories);
                 }
-
-                scan.End = DateTime.Now;
-
-                log.Info("Saving scan results to database...");
+                else
+                {
+                    scan = scanner.Scan(directories);
+                }
 
                 context.Scans.Add(scan);
 
