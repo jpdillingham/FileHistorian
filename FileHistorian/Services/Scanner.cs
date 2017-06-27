@@ -8,18 +8,6 @@ namespace FileHistorian.Services
 {
     public class Scanner
     {
-        private IFileFactory FileFactory { get; set; }
-
-        public Scanner()
-            : this(new FileFactory())
-        {
-        }
-
-        public Scanner(IFileFactory fileFactory)
-        {
-            FileFactory = fileFactory;
-        }
-
         #region Public Methods
 
         public Scan Scan(List<string> directories)
@@ -37,7 +25,7 @@ namespace FileHistorian.Services
 
                     foreach (string file in fileList)
                     {
-                        scan.Files.Add(FileFactory.GetFile(file));
+                        scan.Files.Add(GetFile(file));
                     }
                 }
             }
@@ -55,5 +43,23 @@ namespace FileHistorian.Services
         }
 
         #endregion Public Methods
+
+        #region Private Methods
+
+        private File GetFile(string filename)
+        {
+            System.IO.FileInfo fileInfo = new System.IO.FileInfo(filename);
+
+            File retVal = new File();
+            retVal.FullName = fileInfo.FullName;
+            retVal.Size = fileInfo.Length;
+            retVal.CreatedOn = fileInfo.CreationTime;
+            retVal.ModifiedOn = fileInfo.LastWriteTime;
+            retVal.AccessedOn = fileInfo.LastAccessTime;
+
+            return retVal;
+        }
+
+        #endregion Private Methods
     }
 }
