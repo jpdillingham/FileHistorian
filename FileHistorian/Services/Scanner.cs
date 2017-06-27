@@ -1,8 +1,6 @@
-﻿using FileHistorian.Data.Entities;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using FileHistorian.Data.Entities;
 
 namespace FileHistorian.Services
 {
@@ -31,7 +29,7 @@ namespace FileHistorian.Services
             }
             catch (System.Exception ex)
             {
-                scan.Exceptions.Add(new Data.Entities.Exception() { Timestamp = System.DateTime.Now, Message = ex.Message });
+                scan.Exceptions.Add(new Exception() { Timestamp = System.DateTime.Now, Message = ex.Message });
             }
 
             return scan;
