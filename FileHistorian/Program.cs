@@ -5,15 +5,15 @@
 
 using System;
 using System.Collections.Generic;
-using System.ServiceProcess;
-using FileHistorian.Data;
-using FileHistorian.Data.Entities;
-using NLog;
 using System.Configuration;
 using System.Linq;
-using FileHistorian.CommandLine;
+using System.ServiceProcess;
 using System.Threading.Tasks;
+using FileHistorian.CommandLine;
+using FileHistorian.Data;
+using FileHistorian.Data.Entities;
 using FileHistorian.Services;
+using NLog;
 
 namespace FileHistorian
 {
@@ -33,14 +33,18 @@ namespace FileHistorian
 
         #endregion Private Fields
 
+        #region Private Properties
+
         [Argument('i', "install-service")]
         private static bool InstallService { get; set; }
+
+        [Argument('o', "run-once")]
+        private static bool RunOnce { get; set; }
 
         [Argument('u', "uninstall-service")]
         private static bool UninstallService { get; set; }
 
-        [Argument('o', "run-once")]
-        private static bool RunOnce { get; set; }
+        #endregion Private Properties
 
         #region Internal Methods
 
@@ -55,6 +59,8 @@ namespace FileHistorian
             try
             {
                 Task.Run(() => Scan(directories));
+
+                Console.ReadKey();
             }
             catch (System.Exception ex)
             {
@@ -94,20 +100,21 @@ namespace FileHistorian
             {
                 LoadConfiguration();
 
-                if (RunOnce)
+                // if the platform is Windows and Environment.UserInteractive is false, the application is being started as a service.
+                if (Utility.IsWindows() && (!Environment.UserInteractive))
                 {
-                    Task.Run(() => Scan(directories, false)).GetAwaiter().GetResult();
+                    ServiceBase.Run(new Service());
                 }
                 else
                 {
-                    // if the platform is Windows and Environment.UserInteractive is false, the application is being started as a service.
-                    if (Utility.IsWindows() && (!Environment.UserInteractive))
+                    // the application is being run under user mode. if the RunOnce flag is specified, perform one scan, then quit.
+                    // Otherwise, start the application.
+                    if (RunOnce)
                     {
-                        ServiceBase.Run(new Service());
+                        Task.Run(() => Scan(directories)).GetAwaiter().GetResult();
                     }
                     else
                     {
-                        // the application is being run under user mode.
                         Start(args);
                         Stop();
                     }
@@ -117,42 +124,31 @@ namespace FileHistorian
 
         #endregion Private Methods
 
+        /// <summary>
+        ///     Loads the application configuration from App.config.
+        /// </summary>
         private static void LoadConfiguration()
         {
             var section = (FileHistorianConfigurationSection)ConfigurationManager.GetSection("fileHistorian");
-
             directories = section.Directories.Select(d => d.Path).ToList();
         }
 
-        private static async Task Scan(List<string> directories, bool async = true)
+        private static async Task Scan(List<string> directories)
         {
             log.Info("Starting scan...");
 
             using (Context context = new Context())
             {
+                log.Info("Initializing scanner...");
+
                 Scanner scanner = new Scanner();
 
-                Scan scan = new Scan();
+                log.Info("Initiating scan...");
+                Scan scan = await scanner.ScanAsync(directories);
 
-                if (async)
-                {
-                    scan = await scanner.ScanAsync(directories);
-                }
-                else
-                {
-                    scan = scanner.Scan(directories);
-                }
-
+                log.Info("Saving scan results...");
                 context.Scans.Add(scan);
-
-                if (async)
-                {
-                    await context.SaveChangesAsync();
-                }
-                else
-                {
-                    context.SaveChanges();
-                }
+                await context.SaveChangesAsync();
             }
 
             log.Info("Scan complete.");
