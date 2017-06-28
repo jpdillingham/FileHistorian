@@ -24,6 +24,9 @@ namespace FileHistorian
     {
         #region Private Fields
 
+        /// <summary>
+        ///     The list of directories specified in App.config.
+        /// </summary>
         private static List<string> directories = new List<string>();
 
         /// <summary>
@@ -35,12 +38,24 @@ namespace FileHistorian
 
         #region Private Properties
 
+        /// <summary>
+        ///     Gets or sets a value indicating whether the Windows service should be installed.
+        /// </summary>
+        /// <remarks>Populated from command-line arguments.</remarks>
         [Argument('i', "install-service")]
         private static bool InstallService { get; set; }
 
+        /// <summary>
+        ///     Gets or sets a value indicating whether a single scan should be executed, then the application stopped.
+        /// </summary>
+        /// <remarks>Populated from command-line arguments.</remarks>
         [Argument('o', "run-once")]
         private static bool RunOnce { get; set; }
 
+        /// <summary>
+        ///     Gets or sets a value indicating whether the Windows service should be uninstalled.
+        /// </summary>
+        /// <remarks>Populated from command-line arguments.</remarks>
         [Argument('u', "uninstall-service")]
         private static bool UninstallService { get; set; }
 
@@ -60,6 +75,7 @@ namespace FileHistorian
             {
                 Task.Run(() => Scan(directories));
 
+                Console.WriteLine("Press any key to exit.");
                 Console.ReadKey();
             }
             catch (System.Exception ex)
@@ -79,6 +95,15 @@ namespace FileHistorian
         #endregion Internal Methods
 
         #region Private Methods
+
+        /// <summary>
+        ///     Loads the application configuration from App.config.
+        /// </summary>
+        private static void LoadConfiguration()
+        {
+            var section = (FileHistorianConfigurationSection)ConfigurationManager.GetSection("fileHistorian");
+            directories = section.Directories.Select(d => d.Path).ToList();
+        }
 
         /// <summary>
         ///     The main entry point for the application.
@@ -122,36 +147,34 @@ namespace FileHistorian
             }
         }
 
-        #endregion Private Methods
-
         /// <summary>
-        ///     Loads the application configuration from App.config.
+        ///     Executes a scan of each of the specified directories and saves the result to the database.
         /// </summary>
-        private static void LoadConfiguration()
-        {
-            var section = (FileHistorianConfigurationSection)ConfigurationManager.GetSection("fileHistorian");
-            directories = section.Directories.Select(d => d.Path).ToList();
-        }
-
+        /// <param name="directories">The list of directories to scan.</param>
+        /// <returns>The asynchronous operation containing the scan.</returns>
         private static async Task Scan(List<string> directories)
         {
             log.Info("Starting scan...");
 
             using (Context context = new Context())
             {
-                log.Info("Initializing scanner...");
+                log.Debug("Initializing scanner...");
 
                 Scanner scanner = new Scanner();
 
-                log.Info("Initiating scan...");
+                log.Debug("Initiating scan...");
+
                 Scan scan = await scanner.ScanAsync(directories);
 
-                log.Info("Saving scan results...");
+                log.Debug("Saving scan results...");
+
                 context.Scans.Add(scan);
                 await context.SaveChangesAsync();
             }
 
             log.Info("Scan complete.");
         }
+
+        #endregion Private Methods
     }
 }

@@ -1,11 +1,21 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using FileHistorian.Data.Entities;
+using NLog;
 
 namespace FileHistorian.Services
 {
     public class Scanner
     {
+        #region Private Fields
+
+        /// <summary>
+        ///     The logger for the class.
+        /// </summary>
+        private static Logger log = LogManager.GetCurrentClassLogger();
+
+        #endregion Private Fields
+
         #region Public Methods
 
         public Scan Scan(List<string> directories)
@@ -19,10 +29,13 @@ namespace FileHistorian.Services
             {
                 foreach (string directory in directories)
                 {
+                    log.Info($"Scanning directory '{directory}'...");
+
                     string[] fileList = System.IO.Directory.GetFiles(directory, "*", System.IO.SearchOption.AllDirectories);
 
                     foreach (string file in fileList)
                     {
+                        log.Info($"File: {file}");
                         scan.Files.Add(GetFile(file));
                     }
                 }
@@ -35,9 +48,9 @@ namespace FileHistorian.Services
             return scan;
         }
 
-        public Task<Scan> ScanAsync(List<string> directories)
+        public async Task<Scan> ScanAsync(List<string> directories)
         {
-            return new Task<Scan>(() => Scan(directories));
+            return await Task.Run(() => Scan(directories));
         }
 
         #endregion Public Methods
