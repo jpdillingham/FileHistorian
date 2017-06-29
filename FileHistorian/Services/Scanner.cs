@@ -25,24 +25,33 @@ namespace FileHistorian.Services
             scan.Files = new List<File>();
             scan.Exceptions = new List<Exception>();
 
-            try
+            foreach (string directory in directories)
             {
-                foreach (string directory in directories)
-                {
-                    log.Info($"Scanning directory '{directory}'...");
+                log.Info($"Scanning directory '{directory}'...");
 
-                    string[] fileList = System.IO.Directory.GetFiles(directory, "*", System.IO.SearchOption.AllDirectories);
+                string[] fileList = new string[] { };
+
+                try
+                {
+                    fileList = System.IO.Directory.GetFiles(directory, "*", System.IO.SearchOption.AllDirectories);
 
                     foreach (string file in fileList)
                     {
-                        log.Info($"File: {file}");
-                        scan.Files.Add(GetFile(file));
+                        try
+                        {
+                            log.Info($"File: {file}");
+                            scan.Files.Add(GetFile(file));
+                        }
+                        catch (System.Exception ex)
+                        {
+                            scan.Exceptions.Add(GetException(ex));
+                        }
                     }
                 }
-            }
-            catch (System.Exception ex)
-            {
-                scan.Exceptions.Add(new Exception() { Timestamp = System.DateTime.Now, Message = ex.Message });
+                catch (System.Exception ex)
+                {
+                    scan.Exceptions.Add(GetException(ex));
+                }
             }
 
             return scan;
@@ -56,6 +65,15 @@ namespace FileHistorian.Services
         #endregion Public Methods
 
         #region Private Methods
+
+        private Exception GetException(System.Exception exception)
+        {
+            return new Exception()
+            {
+                Timestamp = System.DateTime.Now,
+                Message = exception.Message
+            };
+        }
 
         private File GetFile(string filename)
         {
