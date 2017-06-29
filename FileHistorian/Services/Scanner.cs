@@ -1,10 +1,18 @@
-﻿using System.Collections.Generic;
+﻿/*
+ * Copyright (C) 2017 JP Dillingham (jp@dillingham.ws)
+ * The MIT License (MIT)
+ */
+
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using FileHistorian.Data.Entities;
 using NLog;
 
 namespace FileHistorian.Services
 {
+    /// <summary>
+    ///     Scans directories and generates <see cref="Scan"/> objects containing the results.
+    /// </summary>
     public class Scanner
     {
         #region Private Fields
@@ -18,6 +26,11 @@ namespace FileHistorian.Services
 
         #region Public Methods
 
+        /// <summary>
+        ///     Scans the specified list of directories and generates a <see cref="Scan"/> containing the results.
+        /// </summary>
+        /// <param name="directories">The list of directories to scan.</param>
+        /// <returns>A Scan containing the result of the scan.</returns>
         public Scan Scan(List<string> directories)
         {
             Scan scan = new Scan();
@@ -57,6 +70,11 @@ namespace FileHistorian.Services
             return scan;
         }
 
+        /// <summary>
+        ///     Asynchronously executes a scan.
+        /// </summary>
+        /// <param name="directories">The list of directories to scan.</param>
+        /// <returns>A Scan containing the result of the scan.</returns>
         public async Task<Scan> ScanAsync(List<string> directories)
         {
             return await Task.Run(() => Scan(directories));
@@ -66,6 +84,11 @@ namespace FileHistorian.Services
 
         #region Private Methods
 
+        /// <summary>
+        ///     Generates an <see cref="Exception"/> record from the specified <see cref="System.Exception"/>.
+        /// </summary>
+        /// <param name="exception">The originating Exception for which the Exception is to be generated.</param>
+        /// <returns>The generated Exception record.</returns>
         private Exception GetException(System.Exception exception)
         {
             return new Exception()
@@ -75,6 +98,11 @@ namespace FileHistorian.Services
             };
         }
 
+        /// <summary>
+        ///     Generates a <see cref="File"/> record from the specified file.
+        /// </summary>
+        /// <param name="filename">The filename of the file for which the File record is to be generated.</param>
+        /// <returns>The generated File record.</returns>
         private File GetFile(string filename)
         {
             System.IO.FileInfo fileInfo = new System.IO.FileInfo(filename);
