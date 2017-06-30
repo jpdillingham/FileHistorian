@@ -40,7 +40,7 @@ namespace FileHistorian.Services
 
             foreach (string directory in directories)
             {
-                log.Info($"Scanning directory '{directory}'...");
+                log.Debug($"Scanning directory: {directory}...");
 
                 string[] fileList = new string[] { };
 
@@ -52,7 +52,7 @@ namespace FileHistorian.Services
                     {
                         try
                         {
-                            log.Info($"File: {file}");
+                            log.Debug($"Adding file: {file}");
                             scan.Files.Add(GetFile(file));
                         }
                         catch (System.Exception ex)
