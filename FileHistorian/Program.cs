@@ -10,6 +10,7 @@ using System.Data.Entity.Migrations;
 using System.Linq;
 using System.ServiceProcess;
 using System.Threading.Tasks;
+using System.Timers;
 using FileHistorian.CommandLine;
 using FileHistorian.Data;
 using FileHistorian.Data.Entities;
@@ -36,9 +37,24 @@ namespace FileHistorian
         private static List<string> directories = new List<string>();
 
         /// <summary>
+        ///     The timestamp of the start of the most recent scan.
+        /// </summary>
+        private static DateTime lastScanStart;
+
+        /// <summary>
         ///     The logger for the class.
         /// </summary>
         private static Logger log = LogManager.GetCurrentClassLogger();
+
+        /// <summary>
+        ///     The offset, from midnight, at which the daily scan should start.
+        /// </summary>
+        private static TimeSpan mightnightOffset;
+
+        /// <summary>
+        ///     The application timer.
+        /// </summary>
+        private static Timer timer = new Timer();
 
         #endregion Private Fields
 
@@ -79,7 +95,22 @@ namespace FileHistorian
 
             try
             {
-                Task.Run(() => Scan(directories));
+                Scan lastScan = context.Scans.OrderByDescending(s => s.Start).FirstOrDefault();
+
+                if (lastScan != default(Scan))
+                {
+                    lastScanStart = lastScan.Start;
+                }
+                else
+                {
+                    lastScanStart = new DateTime(1970, 1, 1);
+                }
+
+                log.Debug($"Previous scan start: {lastScanStart}");
+
+                timer.Interval = 60000; // 1 minute
+                timer.Elapsed += new ElapsedEventHandler(TimerTick);
+                timer.Enabled = true;
 
                 Console.ReadKey();
 
@@ -213,6 +244,11 @@ namespace FileHistorian
             await context.SaveChangesAsync();
 
             log.Info("Scan complete.");
+        }
+
+        private static void TimerTick(object sender, ElapsedEventArgs e)
+        {
+            Task.Run(() => Scan(directories));
         }
 
         #endregion Private Methods
