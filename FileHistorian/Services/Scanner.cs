@@ -57,12 +57,14 @@ namespace FileHistorian.Services
                         }
                         catch (System.Exception ex)
                         {
+                            log.Warn($"Error adding file: {ex.Message}");
                             scan.Exceptions.Add(GetException(ex));
                         }
                     }
                 }
                 catch (System.Exception ex)
                 {
+                    log.Warn($"Error scanning directory: {ex.Message}");
                     scan.Exceptions.Add(GetException(ex));
                 }
             }
