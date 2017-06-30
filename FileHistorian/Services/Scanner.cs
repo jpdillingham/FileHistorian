@@ -67,6 +67,8 @@ namespace FileHistorian.Services
                 }
             }
 
+            scan.End = System.DateTime.Now;
+
             return scan;
         }
 
