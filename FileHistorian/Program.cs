@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.ServiceProcess;
 using System.Threading.Tasks;
@@ -14,7 +15,6 @@ using FileHistorian.Data;
 using FileHistorian.Data.Entities;
 using FileHistorian.Services;
 using NLog;
-using System.Data.Entity.Migrations;
 
 namespace FileHistorian
 {
@@ -81,8 +81,9 @@ namespace FileHistorian
             {
                 Task.Run(() => Scan(directories));
 
-                Console.WriteLine("Press any key to exit.");
                 Console.ReadKey();
+
+                log.Info("Stopping application...");
             }
             catch (System.Exception ex)
             {
@@ -128,7 +129,7 @@ namespace FileHistorian
                 log.Debug("Database is up to date.");
             }
 
-            log.Info("Initialization complete.");
+            log.Info("Database initialization complete.");
         }
 
         /// <summary>
@@ -136,8 +137,12 @@ namespace FileHistorian
         /// </summary>
         private static void LoadConfiguration()
         {
+            log.Debug("Retrieving configuration from App.config...");
+
             var section = (FileHistorianConfigurationSection)ConfigurationManager.GetSection("fileHistorian");
             directories = section.Directories.Select(d => d.Path).ToList();
+
+            log.Debug("Configuration retrieved.");
         }
 
         /// <summary>
@@ -164,6 +169,8 @@ namespace FileHistorian
                 // if the platform is Windows and Environment.UserInteractive is false, the application is being started as a service.
                 if (Utility.IsWindows() && (!Environment.UserInteractive))
                 {
+                    log.Info("Starting service...");
+
                     ServiceBase.Run(new Service());
                 }
                 else
@@ -172,10 +179,14 @@ namespace FileHistorian
                     // Otherwise, start the application.
                     if (RunOnce)
                     {
+                        log.Info("Executing a single scan...");
+
                         Task.Run(() => Scan(directories)).GetAwaiter().GetResult();
                     }
                     else
                     {
+                        log.Info("Starting application...");
+
                         Start(args);
                         Stop();
                     }
@@ -192,11 +203,7 @@ namespace FileHistorian
         {
             log.Info("Starting scan...");
 
-            log.Debug("Initializing scanner...");
-
             Scanner scanner = new Scanner();
-
-            log.Debug("Initiating scan...");
 
             Scan scan = await scanner.ScanAsync(directories);
 

@@ -33,6 +33,8 @@ namespace FileHistorian.Services
         /// <returns>A Scan containing the result of the scan.</returns>
         public Scan Scan(List<string> directories)
         {
+            log.Debug("Initiating scan...");
+
             Scan scan = new Scan();
             scan.Start = System.DateTime.Now;
             scan.Files = new List<File>();
@@ -70,6 +72,8 @@ namespace FileHistorian.Services
             }
 
             scan.End = System.DateTime.Now;
+
+            log.Debug("Scan complete.");
 
             return scan;
         }
