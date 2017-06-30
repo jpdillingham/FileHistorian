@@ -3,6 +3,7 @@
  * The MIT License (MIT)
  */
 
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics.CodeAnalysis;
@@ -90,6 +91,35 @@ namespace FileHistorian
         public DirectoryElementCollection Directories
         {
             get { return (DirectoryElementCollection)this["Directories"]; }
+        }
+
+        /// <summary>
+        ///     Gets the <see cref="ConfigurationElement"/> used to store the scan time configuration.
+        /// </summary>
+        [ConfigurationProperty("ScanTime")]
+        public ScanTimeElement ScanTime
+        {
+            get { return (ScanTimeElement)this["ScanTime"]; }
+        }
+
+        #endregion Public Properties
+    }
+
+    /// <summary>
+    ///     The <see cref="ConfigurationElement"/> used to store the scan time configuration.
+    /// </summary>
+    public class ScanTimeElement : ConfigurationElement
+    {
+        #region Public Properties
+
+        /// <summary>
+        ///     Gets a TimeSpan representing the offset from midnight at which the scan should be started.
+        /// </summary>
+        [ConfigurationProperty("midnightOffset", IsRequired = true)]
+        [TimeSpanValidator(MinValueString = "00:00:00", MaxValueString = "23:59:59")]
+        public TimeSpan MidnightOffset
+        {
+            get { return (TimeSpan)this["midnightOffset"]; }
         }
 
         #endregion Public Properties
