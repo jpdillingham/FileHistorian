@@ -14,6 +14,7 @@ using FileHistorian.Data;
 using FileHistorian.Data.Entities;
 using FileHistorian.Services;
 using NLog;
+using System.Data.Entity.Migrations;
 
 namespace FileHistorian
 {
@@ -23,6 +24,11 @@ namespace FileHistorian
     internal class Program
     {
         #region Private Fields
+
+        /// <summary>
+        ///     The database context for the application.
+        /// </summary>
+        private static Context context = new Context();
 
         /// <summary>
         ///     The list of directories specified in App.config.
@@ -97,6 +103,35 @@ namespace FileHistorian
         #region Private Methods
 
         /// <summary>
+        ///     Initializes the database context for the application and applies any outstanding migration(s).
+        /// </summary>
+        private static void InitializeContext()
+        {
+            context.Database.Connection.ConnectionString = ConfigurationManager.ConnectionStrings["Default"].ConnectionString;
+
+            log.Info("Initializing database...");
+
+            context.Database.Initialize(true);
+
+            DbMigrator migrator = new DbMigrator(new Data.Migrations.Configuration());
+
+            if (migrator.GetPendingMigrations().Count() > 0)
+            {
+                log.Debug("Performing migration(s)...");
+
+                migrator.Update();
+
+                log.Debug("Migration(s) complete.");
+            }
+            else
+            {
+                log.Debug("Database is up to date.");
+            }
+
+            log.Info("Initialization complete.");
+        }
+
+        /// <summary>
         ///     Loads the application configuration from App.config.
         /// </summary>
         private static void LoadConfiguration()
@@ -124,6 +159,7 @@ namespace FileHistorian
             else
             {
                 LoadConfiguration();
+                InitializeContext();
 
                 // if the platform is Windows and Environment.UserInteractive is false, the application is being started as a service.
                 if (Utility.IsWindows() && (!Environment.UserInteractive))
@@ -156,21 +192,18 @@ namespace FileHistorian
         {
             log.Info("Starting scan...");
 
-            using (Context context = new Context())
-            {
-                log.Debug("Initializing scanner...");
+            log.Debug("Initializing scanner...");
 
-                Scanner scanner = new Scanner();
+            Scanner scanner = new Scanner();
 
-                log.Debug("Initiating scan...");
+            log.Debug("Initiating scan...");
 
-                Scan scan = await scanner.ScanAsync(directories);
+            Scan scan = await scanner.ScanAsync(directories);
 
-                log.Debug("Saving scan results...");
+            log.Debug("Saving scan results...");
 
-                context.Scans.Add(scan);
-                await context.SaveChangesAsync();
-            }
+            context.Scans.Add(scan);
+            await context.SaveChangesAsync();
 
             log.Info("Scan complete.");
         }

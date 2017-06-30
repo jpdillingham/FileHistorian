@@ -6,6 +6,7 @@
 using System.Configuration;
 using System.Data.Entity;
 using FileHistorian.Data.Entities;
+using NLog;
 
 namespace FileHistorian.Data
 {
@@ -14,6 +15,15 @@ namespace FileHistorian.Data
     /// </summary>
     public class Context : DbContext
     {
+        #region Private Fields
+
+        /// <summary>
+        ///     The logger for the class.
+        /// </summary>
+        private static Logger log = LogManager.GetCurrentClassLogger();
+
+        #endregion Private Fields
+
         #region Public Constructors
 
         /// <summary>
@@ -21,12 +31,16 @@ namespace FileHistorian.Data
         /// </summary>
         public Context()
         {
-            Database.Connection.ConnectionString = ConfigurationManager.ConnectionStrings["Default"].ConnectionString;
         }
 
         #endregion Public Constructors
 
         #region Public Properties
+
+        /// <summary>
+        ///     Gets or sets the list of <see cref="Exception"/> records for the context.
+        /// </summary>
+        public DbSet<Exception> Exceptions { get; set; }
 
         /// <summary>
         ///     Gets or sets the list of <see cref="File"/> records for the context.
@@ -37,11 +51,6 @@ namespace FileHistorian.Data
         ///     Gets or sets the list of <see cref="Scan"/> records for the context.
         /// </summary>
         public DbSet<Scan> Scans { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the list of <see cref="Exception"/> records for the context.
-        /// </summary>
-        public DbSet<Exception> Exceptions { get; set; }
 
         #endregion Public Properties
     }
