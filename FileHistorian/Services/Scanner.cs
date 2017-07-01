@@ -58,7 +58,7 @@ namespace FileHistorian.Services
                         }
                         catch (System.Exception ex)
                         {
-                            log.Warn($"Error adding file: {ex.Message}");
+                            log.Warn($"Error adding file {file}: {ex.Message}");
                             scan.Exceptions.Add(GetException(ex));
                         }
                     }
