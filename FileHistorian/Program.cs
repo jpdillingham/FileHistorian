@@ -252,6 +252,11 @@ namespace FileHistorian
             log.Info("Scan complete.");
         }
 
+        /// <summary>
+        ///     Executed when the application timer elapses. Determines whether a scan should be executed and if so, executes one.
+        /// </summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         private static void TimerTick(object sender, ElapsedEventArgs e)
         {
             if (DateTime.Now.TimeOfDay >= midnightOffset && lastScanStart.Date < DateTime.Today)
