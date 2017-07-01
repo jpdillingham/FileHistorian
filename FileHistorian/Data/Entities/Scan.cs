@@ -23,7 +23,6 @@ namespace FileHistorian.Data.Entities
         public Scan()
         {
             ScanID = Guid.NewGuid();
-            Start = DateTime.Now;
         }
 
         #endregion Public Constructors
