@@ -14,6 +14,15 @@ namespace FileHistorian.Data.Entities
     /// </summary>
     public class Exception
     {
+        #region Public Fields
+
+        /// <summary>
+        ///     The maximum length of an Exception message.
+        /// </summary>
+        public const int MaxLength = 1000;
+
+        #endregion Public Fields
+
         #region Public Constructors
 
         /// <summary>
@@ -39,7 +48,7 @@ namespace FileHistorian.Data.Entities
         ///     Gets or sets the Exception message.
         /// </summary>
         [Column(Order = 3)]
-        [MaxLength(1000)]
+        [MaxLength(MaxLength)]
         public string Message { get; set; }
 
         /// <summary>

@@ -101,7 +101,7 @@ namespace FileHistorian.Services
             return new Exception()
             {
                 Timestamp = System.DateTime.Now,
-                Message = exception.Message
+                Message = exception.Message.Truncate(Exception.MaxLength)
             };
         }
 
