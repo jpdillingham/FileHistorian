@@ -31,6 +31,7 @@ namespace FileHistorian.Data
         /// </summary>
         public Context()
         {
+            Configuration.AutoDetectChangesEnabled = false;
         }
 
         #endregion Public Constructors
