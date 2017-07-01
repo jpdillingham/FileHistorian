@@ -147,8 +147,6 @@ namespace FileHistorian
         /// </summary>
         private static void InitializeContext()
         {
-            context.Database.Connection.ConnectionString = ConfigurationManager.ConnectionStrings["Default"].ConnectionString;
-
             log.Info("Initializing database...");
 
             context.Database.Initialize(true);
