@@ -66,7 +66,7 @@ namespace FileHistorian.Data.Entities
         /// <summary>
         ///     Gets or sets the timestamp of the time at which the Exception was encountered.
         /// </summary>
-        [Column(Order = 2)]
+        [Column(Order = 2, TypeName = "datetime2")]
         public DateTime Timestamp { get; set; }
 
         #endregion Public Properties

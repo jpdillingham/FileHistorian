@@ -30,6 +30,7 @@ namespace FileHistorian.Data
         ///     Initializes a new instance of the <see cref="Context"/> class.
         /// </summary>
         public Context()
+            : base("FileHistorian")
         {
             Configuration.AutoDetectChangesEnabled = false;
         }

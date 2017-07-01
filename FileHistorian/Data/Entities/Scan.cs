@@ -32,7 +32,7 @@ namespace FileHistorian.Data.Entities
         /// <summary>
         ///     Gets or sets the timestamp of the end of the scan.
         /// </summary>
-        [Column(Order = 2)]
+        [Column(Order = 2, TypeName = "datetime2")]
         public DateTime? End { get; set; }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace FileHistorian.Data.Entities
         /// <summary>
         ///     Gets or sets the timestamp of the start of the scan.
         /// </summary>
-        [Column(Order = 1)]
+        [Column(Order = 1, TypeName = "datetime2")]
         public DateTime Start { get; set; }
 
         #endregion Public Properties

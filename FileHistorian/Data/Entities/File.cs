@@ -19,13 +19,13 @@ namespace FileHistorian.Data.Entities
         /// <summary>
         ///     Gets or sets the timestamp at which the file was last accessed.
         /// </summary>
-        [Column(Order = 5)]
+        [Column(Order = 5, TypeName = "datetime2")]
         public DateTime? AccessedOn { get; set; }
 
         /// <summary>
         ///     Gets or sets the timestamp at which the file was created.
         /// </summary>
-        [Column(Order = 3)]
+        [Column(Order = 3, TypeName = "datetime2")]
         public DateTime? CreatedOn { get; set; }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace FileHistorian.Data.Entities
         /// <summary>
         ///     Gets or sets the timestamp at which the file was last modified.
         /// </summary>
-        [Column(Order = 4)]
+        [Column(Order = 4, TypeName = "datetime2")]
         public DateTime? ModifiedOn { get; set; }
 
         /// <summary>
