@@ -52,6 +52,11 @@ namespace FileHistorian
         private static TimeSpan midnightOffset = new TimeSpan(0, 0, 0);
 
         /// <summary>
+        ///     Indicates whether a scan is currently in progress.
+        /// </summary>
+        private static bool scanInProgress = false;
+
+        /// <summary>
         ///     The application timer.
         /// </summary>
         private static Timer timer = new Timer();
@@ -240,12 +245,16 @@ namespace FileHistorian
 
             Scanner scanner = new Scanner();
 
+            scanInProgress = true;
+
             Scan scan = await scanner.ScanAsync(directories);
 
             log.Debug("Saving scan results...");
 
             context.Scans.Add(scan);
             await context.SaveChangesAsync();
+
+            scanInProgress = false;
 
             lastScanStart = scan.Start;
 
@@ -259,7 +268,7 @@ namespace FileHistorian
         /// <param name="e">The event arguments.</param>
         private static void TimerTick(object sender, ElapsedEventArgs e)
         {
-            if (DateTime.Now.TimeOfDay >= midnightOffset && lastScanStart.Date < DateTime.Today)
+            if (!scanInProgress && DateTime.Now.TimeOfDay >= midnightOffset && lastScanStart.Date < DateTime.Today)
             {
                 Task.Run(() => Scan(directories));
             }
