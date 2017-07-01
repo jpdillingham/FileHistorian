@@ -1,0 +1,8 @@
+os:
+  - linux
+language: csharp
+solution: FileHistorian.sln
+install:
+  - nuget restore FileHistorian.sln
+script:
+  - xbuild /p:Configuration=Release FileHistorian.sln
