@@ -45,6 +45,22 @@ namespace FileHistorian
             System.Configuration.Install.ManagedInstallerClass.InstallHelper(args);
         }
 
+        /// <summary>
+        ///     Truncates the given string to the specified length.
+        /// </summary>
+        /// <param name="value">The string to truncate.</param>
+        /// <param name="maxLength">The length to which the string is to be truncated.</param>
+        /// <returns>The truncated string.</returns>
+        internal static string Truncate(this string value, int maxLength)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return value;
+            }
+
+            return value.Length <= maxLength ? value : value.Substring(0, maxLength);
+        }
+
         #endregion Internal Methods
     }
 }
