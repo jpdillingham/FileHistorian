@@ -16,6 +16,7 @@ using FileHistorian.Data;
 using FileHistorian.Data.Entities;
 using FileHistorian.Services;
 using NLog;
+using System.Data.Entity;
 
 namespace FileHistorian
 {
@@ -149,6 +150,7 @@ namespace FileHistorian
         {
             log.Info("Initializing database...");
 
+            Database.SetInitializer<Context>(new MigrateDatabaseToLatestVersion<Context, Data.Migrations.Configuration>());
             context.Database.Initialize(true);
 
             log.Info("Database initialization complete.");
