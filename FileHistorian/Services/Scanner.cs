@@ -54,7 +54,6 @@ namespace FileHistorian.Services
                     {
                         try
                         {
-                            log.Debug($"Adding file: {file}");
                             scan.Files.Add(GetFile(file));
                         }
                         catch (System.Exception ex)
