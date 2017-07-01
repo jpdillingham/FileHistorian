@@ -151,21 +151,6 @@ namespace FileHistorian
 
             context.Database.Initialize(true);
 
-            DbMigrator migrator = new DbMigrator(new Data.Migrations.Configuration());
-
-            if (migrator.GetPendingMigrations().Count() > 0)
-            {
-                log.Debug("Performing migration(s)...");
-
-                migrator.Update();
-
-                log.Debug("Migration(s) complete.");
-            }
-            else
-            {
-                log.Debug("Database is up to date.");
-            }
-
             log.Info("Database initialization complete.");
         }
 
