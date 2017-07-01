@@ -76,6 +76,10 @@
       <DependentUpon>201706280159573_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Data\Migrations\Configuration.cs" />
+    <Compile Include="Data\Migrations\201707011524516_ExceptionRefactor.cs" />
+    <Compile Include="Data\Migrations\201707011524516_ExceptionRefactor.Designer.cs">
+      <DependentUpon>201707011524516_ExceptionRefactor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Services\IDiffFactory.cs" />
     <Compile Include="Services\DiffFactory.cs" />
     <Compile Include="Services\Scanner.cs" />
@@ -104,6 +108,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Data\Migrations\201706280159573_InitialCreate.resx">
       <DependentUpon>201706280159573_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\Migrations\201707011524516_ExceptionRefactor.resx">
+      <DependentUpon>201707011524516_ExceptionRefactor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ProjectInstaller.resx">
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
