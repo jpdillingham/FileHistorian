@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data.Entity.Migrations;
+using System.Data.Entity;
 using System.Linq;
 using System.ServiceProcess;
 using System.Threading.Tasks;
@@ -16,7 +16,6 @@ using FileHistorian.Data;
 using FileHistorian.Data.Entities;
 using FileHistorian.Services;
 using NLog;
-using System.Data.Entity;
 
 namespace FileHistorian
 {
