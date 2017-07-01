@@ -31,7 +31,6 @@ namespace FileHistorian.Data.Entities
         /// <summary>
         ///     Gets or sets the <see cref="Scan.ScanID"/> of the <see cref="Scan"/> during which the file was discovered.
         /// </summary>
-        [Key]
         [ForeignKey("Scan")]
         [Column(Order = 0)]
         public Guid ScanID { get; set; }
@@ -39,7 +38,6 @@ namespace FileHistorian.Data.Entities
         /// <summary>
         ///     Gets or sets the timestamp of the time at which the Exception was encountered.
         /// </summary>
-        [Key]
         [Column(Order = 1)]
         public DateTime Timestamp { get; set; }
 
