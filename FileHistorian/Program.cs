@@ -49,7 +49,7 @@ namespace FileHistorian
         /// <summary>
         ///     The offset, from midnight, at which the daily scan should start.
         /// </summary>
-        private static TimeSpan mightnightOffset;
+        private static TimeSpan midnightOffset = new TimeSpan(0, 0, 0);
 
         /// <summary>
         ///     The application timer.
@@ -112,6 +112,9 @@ namespace FileHistorian
                 timer.Elapsed += new ElapsedEventHandler(TimerTick);
                 timer.Enabled = true;
 
+                log.Info($"Scans will execute once daily, starting at {midnightOffset}");
+                log.Info("Press any key to exit.");
+
                 Console.ReadKey();
 
                 log.Info("Stopping application...");
@@ -172,6 +175,7 @@ namespace FileHistorian
 
             var section = (FileHistorianConfigurationSection)ConfigurationManager.GetSection("fileHistorian");
             directories = section.Directories.Select(d => d.Path).ToList();
+            midnightOffset = section.ScanTime.MidnightOffset;
 
             log.Debug("Configuration retrieved.");
         }
@@ -243,12 +247,17 @@ namespace FileHistorian
             context.Scans.Add(scan);
             await context.SaveChangesAsync();
 
+            lastScanStart = scan.Start;
+
             log.Info("Scan complete.");
         }
 
         private static void TimerTick(object sender, ElapsedEventArgs e)
         {
-            Task.Run(() => Scan(directories));
+            if (DateTime.Now.TimeOfDay >= midnightOffset && lastScanStart.Date < DateTime.Today)
+            {
+                Task.Run(() => Scan(directories));
+            }
         }
 
         #endregion Private Methods
