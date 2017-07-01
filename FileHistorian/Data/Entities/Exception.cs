@@ -14,13 +14,32 @@ namespace FileHistorian.Data.Entities
     /// </summary>
     public class Exception
     {
+        #region Public Constructors
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Exception"/> class.
+        /// </summary>
+        public Exception()
+        {
+            ExceptionID = Guid.NewGuid();
+        }
+
+        #endregion Public Constructors
+
         #region Public Properties
+
+        /// <summary>
+        ///     Gets or sets the unique identifer of the Exception.
+        /// </summary>
+        [Key]
+        [Column(Order = 0)]
+        public Guid ExceptionID { get; set; }
 
         /// <summary>
         ///     Gets or sets the Exception message.
         /// </summary>
-        [Column(Order = 2)]
-        [MaxLength(500)]
+        [Column(Order = 3)]
+        [MaxLength(1000)]
         public string Message { get; set; }
 
         /// <summary>
@@ -32,13 +51,13 @@ namespace FileHistorian.Data.Entities
         ///     Gets or sets the <see cref="Scan.ScanID"/> of the <see cref="Scan"/> during which the file was discovered.
         /// </summary>
         [ForeignKey("Scan")]
-        [Column(Order = 0)]
+        [Column(Order = 1)]
         public Guid ScanID { get; set; }
 
         /// <summary>
         ///     Gets or sets the timestamp of the time at which the Exception was encountered.
         /// </summary>
-        [Column(Order = 1)]
+        [Column(Order = 2)]
         public DateTime Timestamp { get; set; }
 
         #endregion Public Properties
